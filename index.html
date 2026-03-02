@@ -224,6 +224,155 @@
     border-radius: 4px; cursor: pointer; transition: all 0.15s;
   }
   .patchnote-dismiss:hover { color: var(--text2); border-color: var(--border2); }
+
+  /* ================================================================
+     PAGE DE TÉLÉCHARGEMENT DÉDIÉE (overlay plein écran)
+  ================================================================ */
+  #dl-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    overflow-y: auto;
+  }
+  #dl-overlay.visible { display: block; }
+
+  .dl-overlay-inner {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  /* grid bg repris du body */
+  #dl-overlay::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .dl-card {
+    position: relative;
+    z-index: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 520px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .dl-brand {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dl-brand span { color: var(--accent); font-weight: 600; }
+
+  .dl-loading {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .dl-loading .spinner-light {
+    width: 28px; height: 28px;
+    border-width: 3px;
+    margin: 0 auto 16px;
+    display: block;
+    border-color: rgba(255,255,255,0.1);
+    border-top-color: var(--accent2);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  .dl-loading p { font-family: var(--mono); font-size: 13px; color: var(--text2); }
+
+  .dl-header { margin-bottom: 28px; }
+  .dl-header-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+  .dl-header h2 { font-size: 22px; font-weight: 400; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .dl-header-meta { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+  .dl-header-meta span { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 12px; color: var(--text3); }
+
+  .dl-files { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+  .dl-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: border-color 0.15s;
+  }
+  .dl-item:hover { border-color: var(--border2); }
+
+  .dl-item-thumb {
+    width: 52px; height: 52px;
+    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; flex-shrink: 0;
+  }
+  .dl-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .dl-item-thumb .th-icon { font-size: 24px; }
+
+  .dl-item-info { flex: 1; min-width: 0; }
+  .dl-item-name { font-family: var(--mono); font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+  .dl-item-size { font-size: 12px; color: var(--text3); }
+
+  .dl-item-btn {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--surface); border: 1px solid var(--border2);
+    color: var(--text2); padding: 8px 14px; border-radius: 6px;
+    cursor: pointer; transition: all 0.15s; text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .dl-item-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--text3); }
+
+  .dl-all-btn-big {
+    width: 100%; padding: 14px; font-size: 14px; justify-content: center;
+    border-radius: 10px; font-weight: 600; letter-spacing: 0.3px;
+  }
+
+  .dl-expiry-bar {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .dl-expiry-text { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+  .dl-expiry-text span { color: var(--text2); }
+  .dl-back-link { font-family: var(--mono); font-size: 11px; color: var(--text3); text-decoration: none; transition: color 0.15s; }
+  .dl-back-link:hover { color: var(--accent); }
+
+  .dl-error {
+    text-align: center; padding: 20px 0;
+  }
+  .dl-error .err-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+  .dl-error h3 { font-size: 18px; font-weight: 400; margin-bottom: 8px; }
+  .dl-error p { font-size: 13px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
+
+  .dl-pwd-form { margin: 20px 0; }
+  .dl-pwd-form label { font-family: var(--mono); font-size: 12px; color: var(--text2); display: block; margin-bottom: 8px; }
+  .dl-pwd-form input { width: 100%; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -1446,26 +1595,190 @@ function dismissPatchNote() {
 // ================================================================
 // INIT — CHARGER HISTORIQUE + DÉTECTER LIEN PARTAGÉ
 // ================================================================
+// ================================================================
+// PAGE DE TÉLÉCHARGEMENT DÉDIÉE
+// ================================================================
+let _currentShareCode = null;
+let _currentShareEntry = null;
+
+async function showDownloadPage(code) {
+  _currentShareCode = code;
+  document.getElementById('dl-overlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const entry = await sbGetLink(code);
+
+    if (!entry) {
+      showDlError('Lien introuvable', 'Ce lien n\'existe pas ou a été supprimé.');
+      return;
+    }
+    if (new Date(entry.expires_at) < new Date()) {
+      showDlError('Lien expiré', 'Ce lien de partage n\'est plus valide. Demandez un nouveau lien à l\'expéditeur.');
+      return;
+    }
+    if (entry.password) {
+      showDlPasswordForm(entry);
+      return;
+    }
+
+    _currentShareEntry = entry;
+    renderDownloadPage(entry);
+
+  } catch(err) {
+    showDlError('Erreur de connexion', 'Impossible de récupérer le lien. Vérifiez votre connexion et réessayez.');
+  }
+}
+
+function showDlError(title, msg) {
+  document.getElementById('dl-state-loading').style.display = 'none';
+  document.getElementById('dl-state-error').style.display = 'block';
+  document.getElementById('dl-state-error').innerHTML = `
+    <div class="dl-error">
+      <span class="err-icon">⚠️</span>
+      <h3>${title}</h3>
+      <p>${msg}</p>
+      <a href="${window.location.pathname}" class="btn btn-secondary">← Retour à FileLab</a>
+    </div>`;
+}
+
+function showDlPasswordForm(entry) {
+  document.getElementById('dl-state-loading').style.display = 'none';
+  document.getElementById('dl-state-password').style.display = 'block';
+  document.getElementById('dl-state-password').innerHTML = `
+    <div class="dl-header">
+      <span class="dl-header-icon">🔒</span>
+      <h2>Lien protégé</h2>
+      <div class="dl-header-meta">
+        <span>Ce partage est protégé par mot de passe</span>
+      </div>
+    </div>
+    <div class="dl-pwd-form">
+      <label>Mot de passe</label>
+      <input type="text" id="dl-pwd-input" placeholder="Entrez le mot de passe..." onkeydown="if(event.key==='Enter') checkDlPassword()">
+      <div class="status" id="dl-pwd-status"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="checkDlPassword()">
+      🔓 Accéder aux fichiers
+    </button>`;
+  setTimeout(() => document.getElementById('dl-pwd-input')?.focus(), 100);
+  // store entry temporarily for password check
+  window._pendingEntry = entry;
+}
+
+function checkDlPassword() {
+  const entry = window._pendingEntry;
+  const pwd = document.getElementById('dl-pwd-input').value;
+  if (pwd !== entry.password) {
+    setStatus('dl-pwd-status', 'error', '❌ Mot de passe incorrect');
+    return;
+  }
+  document.getElementById('dl-state-password').style.display = 'none';
+  _currentShareEntry = entry;
+  renderDownloadPage(entry);
+}
+
+function renderDownloadPage(entry) {
+  document.getElementById('dl-state-loading').style.display = 'none';
+  const files = entry.files;
+  const expDate = new Date(entry.expires_at).toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
+  const dlCount = entry.download_count || 0;
+  const totalSize = formatSize(entry.total_size || 0);
+  const multiFile = files.length > 1;
+
+  const filesHtml = files.map((f, idx) => {
+    const isImage = f.type && f.type.startsWith('image/');
+    const thumbHtml = isImage
+      ? `<img src="${f.url}" alt="${f.name}" onerror="this.parentElement.innerHTML='<span class=th-icon>${getFileIcon(f.name)}</span>'">`
+      : `<span class="th-icon">${getFileIcon(f.name)}</span>`;
+    return `
+      <div class="dl-item">
+        <div class="dl-item-thumb">${thumbHtml}</div>
+        <div class="dl-item-info">
+          <div class="dl-item-name">${f.name}</div>
+          <div class="dl-item-size">${formatSize(f.size)}</div>
+        </div>
+        <a href="${f.url}" download="${f.name}" class="dl-item-btn" onclick="trackDownloadCount()">⬇ Télécharger</a>
+      </div>`;
+  }).join('');
+
+  const allBtn = multiFile ? `
+    <button class="btn btn-primary dl-all-btn-big" onclick="downloadAllFiles()">
+      ⬇ Tout télécharger &nbsp;<span style="opacity:0.6;font-weight:400">(${files.length} fichiers · ${totalSize})</span>
+    </button>` : '';
+
+  document.getElementById('dl-state-content').style.display = 'block';
+  document.getElementById('dl-state-content').innerHTML = `
+    <div class="dl-header">
+      <span class="dl-header-icon">${multiFile ? '📦' : getFileIcon(files[0].name)}</span>
+      <h2>${multiFile ? files.length + ' fichiers partagés' : files[0].name}</h2>
+      <div class="dl-header-meta">
+        <span>📦 ${totalSize}</span>
+        <span>📅 Expire le ${expDate}</span>
+        <span>👁 ${dlCount} téléchargement(s)</span>
+      </div>
+    </div>
+    <div class="dl-files">${filesHtml}</div>
+    ${allBtn}
+    <div class="dl-expiry-bar">
+      <span class="dl-expiry-text">Partagé via <span>FileLab</span></span>
+      <a href="${window.location.pathname}" class="dl-back-link">← Créer mon propre lien</a>
+    </div>`;
+
+  trackDownloadCount();
+}
+
+function trackDownloadCount() {
+  if (!_currentShareCode) return;
+  fetch(`${SUPABASE_URL}/rest/v1/share_links?code=eq.${_currentShareCode}`, {
+    method: 'PATCH',
+    headers: {...sbHeaders, 'Prefer': 'return=minimal'},
+    body: JSON.stringify({ download_count: (_currentShareEntry?.download_count || 0) + 1 })
+  }).catch(() => {});
+}
+
+function downloadAllFiles() {
+  if (!_currentShareEntry) return;
+  _currentShareEntry.files.forEach((f, i) => {
+    setTimeout(() => {
+      const a = document.createElement('a');
+      a.href = f.url; a.download = f.name; a.click();
+    }, i * 600);
+  });
+}
+
+// ================================================================
+// INIT — CHARGER HISTORIQUE + DÉTECTER LIEN PARTAGÉ
+// ================================================================
 window.addEventListener('DOMContentLoaded', () => {
-  // Charger l'historique localStorage
   renderShareHistory();
 
-  // Détecter un ?share= dans l'URL
   const params = new URLSearchParams(window.location.search);
   const code = params.get('share');
   if (code) {
-    showTab('share-tab', document.querySelector('.tab:last-child'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.nav-btn')[1].classList.add('active');
-    document.getElementById('receive-code').value = code;
-    // Scroll vers la section téléchargement
-    setTimeout(() => {
-      const el = document.getElementById('receive-code');
-      el.scrollIntoView({behavior: 'smooth', block: 'center'});
-      receiveFile();
-    }, 400);
+    // Afficher directement la page de téléchargement dédiée
+    showDownloadPage(code);
   }
 });
 </script>
+
+<!-- ================================================================
+     OVERLAY PAGE DE TÉLÉCHARGEMENT DÉDIÉE
+================================================================ -->
+<div id="dl-overlay">
+  <div class="dl-overlay-inner">
+    <div class="dl-card" id="dl-card-inner">
+      <div class="dl-brand">File<span>Lab</span> &mdash; Partage de fichiers</div>
+      <div class="dl-loading" id="dl-state-loading">
+        <div class="spinner-light"></div>
+        <p>Récupération du lien...</p>
+      </div>
+      <div id="dl-state-content" style="display:none"></div>
+      <div id="dl-state-error" style="display:none"></div>
+      <div id="dl-state-password" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
